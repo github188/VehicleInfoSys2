@@ -11,7 +11,7 @@
 
 #define extname "_Setup"
 #define installername myappname+"_"+GetDateTimeString('yyyy-MM-dd','','')+"_"
-#define ver "2.0.1.7"   
+#define ver "2.0.1.8"
 
 [Setup]
 AppName={#company}{#myappname}
