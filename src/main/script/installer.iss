@@ -459,10 +459,6 @@ if CurStep = ssPostInstall then
     WizardForm.StatusLabel.Caption := '启动tomcat服务...';
     ShellExec('open', 'net', _('start {#service_name}'),'', SW_HIDE, ewWaitUntilTerminated, ErrorCode);
 
-    //运行slaver.bat
-    WizardForm.StatusLabel.Caption := '运行slaver..';
-    ShellExec('open', _('{app}\slaver\run.bat'),'',_('{app}\slaver\'), SW_HIDE, ewNoWait, ErrorCode);
-
     DelTree(_('{app}\GetLocalIP'),true,true,true);
 	end;
 end; 

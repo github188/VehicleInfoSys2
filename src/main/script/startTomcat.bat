@@ -14,5 +14,10 @@ set JRE_HOME=%app_root%\jre
 set catalina_home=%app_root%\tomcat
 call %catalina_home%\bin\startup.bat
 
+rem 启动车牌识别
 pushd %app_root%\server
-call run.bat
+start run.bat
+
+rem 启动从服务器
+pushd %app_root%\slaver
+start run.bat
