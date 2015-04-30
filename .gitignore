@@ -1,0 +1,11 @@
+.settings
+.project
+.classpath
+target
+.svn
+.myeclipse
+.idea
+**/*.log
+**/*.swp
+**/temp/*.*
+**/res/*.*
