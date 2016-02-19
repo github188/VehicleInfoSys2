@@ -1,0 +1,43 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<menus>
+	<item id="1" name="综合查询" hidden="false">
+	</item>
+	<item id="2" name="实时布控" hidden="false">		
+	</item>
+	<item id="3" name="以图搜车" hidden="false">		
+	</item>
+	<item id="4" name="技战法" hidden="false">	
+		<subItem id="401" name="假套牌车分析" hidden="false">
+		</subItem>
+		<subItem id="402" name="无牌车分析" hidden="false">
+		</subItem>
+		<subItem id="403" name="同行车分析" hidden="false">
+		</subItem>
+		<subItem id="404" name="首次入城分析" hidden="false">
+		</subItem>
+		<subItem id="405" name="频繁过车分析" hidden="false">
+		</subItem>
+		<subItem id="406" name="频繁夜出车辆分析" hidden="false">
+		</subItem>
+		<subItem id="407" name="昼伏夜出车辆分析" hidden="false">
+		</subItem>
+	</item>
+	<item id="5" name="系统管理" hidden="false">
+		<subItem id="501" name="任务管理" hidden="false">
+		</subItem>
+		<subItem id="502" name="服务器监控" hidden="false">
+		</subItem>
+		<subItem id="503" name="用户管理" hidden="false">
+		</subItem>
+		<subItem id="504" name="行政区划管理" hidden="false">
+		</subItem>
+		<subItem id="505" name="实时图片源采集管理" hidden="false">
+		</subItem>
+        <subItem id="506" name="部门管理" hidden="false">
+        </subItem>
+        <subItem id="507" name="角色管理" hidden="false">
+        </subItem>
+        <subItem id="508" name="日志管理" hidden="false">
+        </subItem>
+	</item>
+</menus>

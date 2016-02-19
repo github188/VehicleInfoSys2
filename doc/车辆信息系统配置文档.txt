@@ -1,0 +1,79 @@
+#车辆信息系统配置项
+
+* ip配置
+* 地图存放位置配置
+* 地图中心点,缩放级别配置
+* 启动车辆信息系统tomcat服务
+* 停止车辆信息系统tomcat服务
+* tomcat无法正常启动或停止
+
+以下目录都是相对于tomcat目录
+
+## ip配置
+
+	\webapps\ROOT\WEB-INF\classes\parameter.properties
+
+把ip配置成本机局域网ip,用于显示识别结果,保证局域网内其他机子能访问
+
+	PictureServerHost=http://192.168.2.20:8081
+
+这个ip的作用是用来访问图片,视频资源的,填写本机ip,保证局域网内其他机子能访问
+
+	serverIp=192.168.2.20
+	
+当有用到查看从服务器的cpu,内存等信息时要用到,用于和从服务器通信
+
+	activemq.brokerUrl=tcp\://192.168.2.20\:61616
+
+## 地图存放位置配置
+
+取得离线地图包后,解压.打开下面文件
+
+	\conf\server.xml
+
+看到最后几行,只要保证这里配置的位置和离线地图实际位置一样就行
+![离线地图位置][p_map]
+
+## 地图中心点,缩放级别配置
+
+	\webapps\ROOT\js\GMap2-Config.js
+
+![经纬度配置][p_latlng]
+
+## 启动车辆信息系统tomcat服务
+
+	\bin\startup.bat
+
+双击就行
+
+## 停止车辆信息系统tomcat服务
+
+	\bin\shutdown.bat
+
+双击就行
+
+# 可能遇到的问题
+
+## tomcat无法正常启动或停止
+
+这是因为tomcat使用的端口是8081,可能有其他程序占用了,造成端口冲突,无法启动,就必须要杀掉这些占用的程序.
+
+检测8081端口是否被占用的方法是,打开命令行窗口.
+
+	netstat -ano|find "8081"
+
+![8081端口占用][p_8081]
+
+图中可以看到Listening 15404,如果有看到Listening字样,就说明端口被占用了,占用的程序的id是15404
+
+这时就要杀掉这个进程
+
+	taskkill /f /pid 15404
+
+上面的命令就是杀掉id为15404的进程.杀掉端口占用的进程后就能启动tomcat了
+
+
+
+[p_latlng]: img/latlng.png
+[p_8081]: img/8081_port.png
+[p_map]: img/map_path.png

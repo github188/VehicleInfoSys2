@@ -1,0 +1,109 @@
+## 接口说明
+
+目前我们提供数据库级别接口
+
+## 编写时间
+
+2015-05-05
+
+## 如何提交任务
+
+向表vlpr_task插入一条记录
+
+1. 下面3个字段是必填
+
+      filePath:目前系统支持本地离线源和实时源的识别
+          本地离线源:本地文件文件或目录的本地绝对路径,如果是目录,程序会对目录中的文件进行识别
+          实时源:hikdvr://ip=192.168.1.1/port=8080/user=admin/pwd=123/channel=1
+                 目前支持海康平台,请自行替换上面的属性值,不再详述
+
+      status: 插入0,表示等待处理
+
+      flag:插入1,表示有效
+	
+	程序扫描到任务后,status状态会变为1等待处理,如果可以处理,则变为2正在处理,处理结果有2种:2成功,3失败
+
+2. 下面6个字段,要么都填,要么都填0.
+
+   roi_x0:'感兴趣区域左上角x坐标
+   roi_y0:感兴趣区域左上角y坐标
+   roi_x1:感兴趣区域右下角x坐标
+   roi_y1:感兴趣区域右下角y坐标
+   roi_cx:图片或视频总宽度',
+   roi_cy:图片或视频总高度',
+
+感兴趣区设置里面填的数值是按比例计算位置,可以不用取真实图片或视频的实际宽高
+比如下面的效果一样,都表示识别全部,程序是按比例计算感兴趣区在原图的位置
+roi_x0,roi_y0,roi_x1, roi_y1, roi_cx, roi_cy
+0,0,500,500,500,500
+0,0,600,600,600,600
+这6个字段全填0,即默认值,也是识别全部
+
+
+## 如何查看结果
+
+详见vlpr_result结果表注释
+
+## 表字段定义
+
+1. vlpr_task
+
+   TaskID               bigint(20) unsigned not null auto_increment comment '主键',
+   FilePath             national varchar(1024) not null comment '要分析视频的路径（可以是本地文件路径，也可以是网络/平台上的url）',
+   Progress             smallint(6) not null default 0 comment '任务的进度',
+   VideoID              bigint(20) unsigned not null default 0 comment '转码视频的id，对应useruploadvideoid',
+   Status               smallint(6) not null default 0 comment '状态，0：等待处理 1：正在处理 2：处理成功 3：处理失败',
+   Flag                 smallint(6) not null default 0 comment '任务是否有效 0：无效 1：有效，只有当Flag=1时，才会对此任务进行处理',
+   CreateTime           timestamp not null default CURRENT_TIMESTAMP comment '任务的创建时间',
+   retryCount           smallint(6) not null default 0 comment '任务失败重试的次数',
+   roi_x0               smallint(6) default 0 comment '感兴趣区域左上角x坐标',
+   roi_y0               smallint(6) default 0 comment '感兴趣区域左上角y坐标',
+   roi_x1               smallint(6) default 0 comment '感兴趣区域右下角x坐标',
+   roi_y1               smallint(6) default 0 comment '感兴趣区域右下角y坐标',
+   roi_cx               smallint(6) default 0 comment '图片或视频总宽度',
+   roi_cy               smallint(6) default 0 comment '图片或视频高度',
+   priority             smallint(6) default 0 comment '识别率优先0，速度优先1',
+   RecognitionSlaveIP   national varchar(1024) not null comment '分布式环境中，处理此任务的slave ip',
+   locate_threshold     smallint(6) default -1 comment '车牌定位阀值',
+   recognize_threshold  smallint(6) default -1 comment '车牌识别阀值',
+   frame_count          bigint(20) default 0 comment '视频总帧数',
+   frame_duration       smallint(6) default 0 comment '每帧的时长（毫秒）',
+   cover_url            varchar(1024) default NULL comment '透明png遮罩图片，用于遮盖不想误识的字幕等',
+   drop_frame           smallint(6) default 0 comment '丢帧数，在每个drop_group帧数中丢弃drop_frame帧',
+   drop_group           smallint(6) default 1 comment '丢帧组的帧数',
+   zoomWidth            smallint(6) default 100 comment 'width放大倍数',
+   zoomHeight           smallint(6) default 100 comment 'height放大倍数',
+
+2. vlpr_result
+
+   SerialNumber         bigint(20) unsigned not null auto_increment,
+   TaskID               bigint(20) unsigned not null comment 'vlpr_task关联id',
+   License              national varchar(32) not null comment '车牌号',
+   LicenseAttribution   national varchar(32) not null comment '车牌归属地',
+   PlateColor           national varchar(32) not null comment '车牌颜色',
+   PlateType            smallint(6) not null default 0 comment '车牌类型:0未知车牌,1蓝牌,2黑牌,3单排黄牌,4双排黄牌（大车尾牌，农用车）,5警车车牌,6武警车牌,7个性化车牌,8单排军车,9双排军车,10使馆牌,11香港牌,12拖拉机,13澳门牌,14厂内牌',
+   Confidence           smallint(6) not null default 0 comment '车牌可信度',
+   Bright               smallint(6) not null default 0 comment '亮度评价',
+   Direction            smallint(6) not null default 0 comment '车相对于图片中的行驶方向:0未知,1向上,2向下,3向左,4向右',
+   LocationLeft         smallint(6) not null default 0 comment 'left,top,right,bottom分别为车牌框左上角(x,y),右下角(x,y)',
+   LocationTop          smallint(6) not null default 0 comment 'left,top,right,bottom分别为车牌框左上角(x,y),右下角(x,y)',
+   LocationRight        smallint(6) not null default 0 comment 'left,top,right,bottom分别为车牌框左上角(x,y),右下角(x,y)',
+   LocationBottom       smallint(6) not null default 0 comment 'left,top,right,bottom分别为车牌框左上角(x,y),右下角(x,y)',
+   CostTime             smallint(6) not null default 0 comment '识别消耗时间,毫秒',
+   CarBright            national varchar(32) not null comment '车的亮度',
+   CarColor             national varchar(32) not null comment '车身颜色',
+   CarLogo              national varchar(32) not null comment '车标志,比如大众,本田等',
+   ImagePath            national varchar(1024) not null comment '结果图片硬盘绝对路径',
+   ImageURL             national varchar(1024) not null comment '结果图片相对url',
+   ResultTime           datetime not null comment '过车时间',
+   CreateTime           datetime not null comment '记录创建时间',
+   frame_index          bigint(20) default 0 comment '截图帧号，如果为空，可能是实时视频',
+   carspeed             double comment '车速,km/h',
+   LabelInfoData        national varchar(1024) comment '车贴',
+   vehicleKind          varchar(50) comment '车型种类:car小轿车;freight货车;passenger客车;motorcycle摩托车;van面包车;unknown未识别',
+   vehicleBrand         varchar(50) comment '车品牌',
+   vehicleStyle         varchar(50) comment '车款',
+
+
+
+

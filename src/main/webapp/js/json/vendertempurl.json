@@ -1,0 +1,21 @@
+[{
+  "value": "1",
+  "text": "宇视",
+  "url":"uniview://ip={#ip}/user={#account}/pwd={#password}/channel={#channel}"
+}, {
+  "value": "2",
+  "text": "海康",
+  "url":"hikdvr://ip={#ip}/port={#port1}/user={#account}/pwd={#password}/channel={#channel}"
+}, {
+  "value": "10",
+  "text": "泽视达",
+  "url":"zetado://ip={#ip}|port={#port1}|username={#account}|pwd={#password}|cameraid={#extCameraId}"
+}, {
+  "value": "11",
+  "text": "大华",
+  "url":"dahuaplatform://ip={#ip}/port={#port1}/user={#account}/pwd={#password}/deviceid={#extCameraId}/channel={#channel}"
+}, {
+  "value": "12",
+  "text": "互信互通",
+  "url":"hxhtplatform://ip={#ip}/port={#port1}/user={#account}/pwd={#password}/channel={#channel}"
+}]
